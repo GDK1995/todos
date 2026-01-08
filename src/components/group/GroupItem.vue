@@ -1,0 +1,73 @@
+<script setup lang='ts'>
+import { onMounted, ref, computed } from 'vue'
+import { useGroupStore } from '../../pinia/groupPinia.ts'
+import ModelComponent from '../../components/model/ModelComponent.vue'
+import GroupAdd from './GroupAdd.vue'
+
+const groupStore = useGroupStore()
+
+const isModal = ref(false)
+
+const openModal = function () {
+  isModal.value = true
+}
+
+const closeModal = function () {
+  isModal.value = false
+}
+
+const selectGroup = function (id) {
+  groupStore.selectGroup(id)
+}
+
+const unselectGroup = function () {
+  groupStore.unselectGroup()
+}
+
+const getAllGroups = async () => {
+  try {
+    await groupStore.getGroups()
+  } catch (error) {
+    console.error('Failed to fetch groups:', error)
+  }
+}
+
+
+onMounted(() => {
+  getAllGroups()
+})
+</script>
+
+<template>
+  <div class="group_block">
+    <div class="group_block_header">
+      <h3>Группы:</h3>
+      <button @click="openModal">
+        Добавить
+      </button>
+    </div>
+    <div class="group_block_item">
+      <ul>
+        <li @click="unselectGroup">Все задачи</li>
+        <li
+          v-for="(groupItem, index) in groupStore.groups"
+          :key="groupItem+index"
+          @click="selectGroup(groupItem.id)">
+          {{groupItem.name}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <ModelComponent
+    v-if="isModal"
+    @close="closeModal">
+    <template #header>
+      <p>Добавить группу</p>
+    </template>
+    <template #default>
+      <GroupAdd
+        @get-groups="getAllGroups"
+        @close="closeModal"/>
+    </template>
+  </ModelComponent>
+</template>
