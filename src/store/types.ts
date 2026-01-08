@@ -18,3 +18,20 @@ export interface GroupInfo {
   id: number
   name: string
 }
+
+export interface TaskInfo {
+  id: number
+  name: string
+  description: string | null
+  group_id: number
+  isDone: boolean
+  deadline: string | null
+}
+
+export interface TaskAddInfo {
+  name: string
+  description: string | null
+  group_id: number
+  isDone: boolean
+  deadline: string | null
+}

@@ -5,8 +5,15 @@ const props = defineProps({
     name: String
 })
 
+const emits = defineEmits(['action'])
+
 const icons = [ADD_USER, ADD_TASK, FILTER, INFO]
+const types = ['user', 'task', 'filter', 'info']
 const titles = ['Добавить участника', 'Добавить задачу', 'Фильтр', 'Данные']
+
+const actions = function (type) {
+  emits('action', type)
+}
 </script>
 
 <template>
@@ -16,7 +23,11 @@ const titles = ['Добавить участника', 'Добавить зад�
     <ul>
       <li v-for="(icon, index) in icons"
         :key="icon + index">
-        <div v-html="icon" :title="titles[index]" class="icon"></div>
+        <div
+          v-html="icon"
+          :title="titles[index]"
+          @click="actions(types[index])"
+          class="icon"></div>
       </li>
     </ul>
   </div>
