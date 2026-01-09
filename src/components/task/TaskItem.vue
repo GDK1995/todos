@@ -38,6 +38,14 @@ const getTasks = async () => {
   }
 }
 
+const getAllGroups = async () => {
+  try {
+    await groupStore.getGroups()
+  } catch (error) {
+    console.error('Failed to fetch groups:', error)
+  }
+}
+
 const action = function(type) {
   switch (type) {
     case 'task':
@@ -93,7 +101,10 @@ watch(
         @get-task="getTasks"
         @close="closeModal"/>
       <UserAddList v-else-if="isUserAddModal" />
-      <TaskInfo v-else-if="isTaskInfoModal" />
+      <TaskInfo
+        v-else-if="isTaskInfoModal"
+        @get-groups="getAllGroups"
+        @close="closeModal"/>
     </template>
   </ModelComponent>
 </template>

@@ -486,6 +486,41 @@ header button {
   border-bottom: none;
 }
 
+.task_info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.task_info_members {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.task_info_members ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.task_info_members li {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--light-gray);
+  cursor: pointer;
+}
+
+.task_info_members li:hover {
+  background-color: var(--lighter-gray-hover);
+}
+
+.task_info_bttn {
+  color: white;
+  align-self: center;
+}
 
 /* empty component starts */
 .empty_block {

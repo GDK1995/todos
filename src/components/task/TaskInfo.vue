@@ -2,12 +2,14 @@
 import { onMounted, ref } from 'vue'
 import { useUserGroupStore } from '../../pinia/userGroupPinia.ts'
 import { useGroupStore } from '../../pinia/groupPinia.ts'
+import { TRASH } from '../../store/constants.ts'
 import ModelComponent from '../../components/model/ModelComponent.vue'
 import DeleteItem from '../delete/DeleteItem.vue'
 
 const groupUserStore = useUserGroupStore()
 const groupStore = useGroupStore()
 
+const emits = defineEmits(['close', 'get-groups'])
 const isModal = ref(false)
 const title = ref('')
 
@@ -32,6 +34,8 @@ const deleteGroup = async function () {
     try {
       await groupStore.deleteGroup()
       groupStore.unselectGroup()
+      emits('close')
+      emits('get-groups')
     } catch (e) {
       console.log(e)
     }
@@ -43,16 +47,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <div>
-      Участники:
+  <div class="task_info">
+    <div class="task_info_members">
+      <h4>Участники:</h4>
       <ul>
         <li v-for="(user, index) in groupUserStore.groupUsers">
-          {{user}}
+          <div>
+            <h4>{{user.username}}</h4>
+            <p>{{user.email}}</p>
+          </div>
+          <button>
+            <div v-html="TRASH"></div>
+          </button>
         </li>
       </ul>
     </div>
-    <button @click="openModal">
+    <button @click="openModal" class="task_info_bttn">
       Удалить группу
     </button>
   </div>
