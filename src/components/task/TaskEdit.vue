@@ -33,7 +33,7 @@ const taskAdd = async function () {
   <form action="" @submit.prevent="taskAdd" class="forms">
     <div class="form_fields">
       <label>Название:*</label>
-      <input type="text" v-model="task.name" required/>
+      <input type="text" v-model="taskStore.selectedTask.name" required/>
     </div>
     <div class="form_fields">
       <label>Дедлайн:*</label>
@@ -45,7 +45,10 @@ const taskAdd = async function () {
     </div>
     <div class="form_fields">
       <label>Описание:</label>
-      <textarea cols="30" rows="10" v-model="task.description"/>
+      <textarea
+        cols="30"
+        rows="10"
+        v-model="taskStore.selectedTask.description"/>
     </div>
     <button type="submit">
       Добавить

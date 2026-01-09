@@ -13,7 +13,6 @@ export const useGroupStore = defineStore('group', {
     selectedGroup(state) {
       return state.groups.find(group => group.id === state.selectedGroupId) || null
     },
-    
   },
   actions: {
     selectGroup(id: number) {
@@ -37,6 +36,11 @@ export const useGroupStore = defineStore('group', {
     async addGroup(payload: { name: string }) {
       const { data } = await http.post('/group', payload)
       return data
-    }
+    },
+
+    async deleteGroup() {
+      const { data } = await http.delete('/group', { data: { delete_ids: [this.selectedGroupId] } })
+      return data
+    },
   }
 })

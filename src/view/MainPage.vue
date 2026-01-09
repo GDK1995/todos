@@ -13,29 +13,8 @@ const deletedUserIds = ref<number[]>([])
 
 const axios: any = inject('axios')
 
-const addTask = function () {
-  const data = {
-    Name: 'Получить обратный ответ',
-    Description: 'Много чего нужно сделать еще',
-    IsDone: false,
-    Deadline: new Date('2026-02-12').toISOString(),
-    GroupId: 1
-  }
-  axios.post('http://localhost:7070/task', data)
-    .then((response) => {
-      console.log(response.data)
-    })
-}
-
 const getGroupByUser = function () {
   axios.get('http://localhost:7070/group?user_id=4')
-    .then((response) => {
-      console.log(response.data)
-    })
-}
-
-const getUserById = function () {
-  axios.get('http://localhost:7070/user?user_id=4')
     .then((response) => {
       console.log(response.data)
     })
@@ -50,31 +29,9 @@ const deleteUser = function () {
     })
 }
 
-const deleteGroup = function () {
-  axios.delete('http://localhost:7070/group', {
-      data: { delete_ids: deletedGroupIds.value }
-    })
-    .then((response) => {
-      getAllGroup()
-    })
-}
-
-const deleteTask = function () {
-  axios.delete('http://localhost:7070/task?id=3')
-    .then((response) => {
-      getTaskByGroup()
-    })
-}
-
 const addSelectedUser = function (ind) {
   if (!selectedUser.value.includes(ind)) {
     selectedUser.value.push(ind)
-  }
-}
-
-const addSelectedGroup = function (ind) {
-  if (!deletedGroupIds.value.includes(ind)) {
-    deletedGroupIds.value.push(ind)
   }
 }
 

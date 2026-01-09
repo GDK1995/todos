@@ -2,7 +2,10 @@
 import { computed, watch, ref } from 'vue'
 import TaskConfig from './TaskConfig.vue'
 import TaskAdd from './TaskAdd.vue'
+import TaskList from './TaskList.vue'
+import TaskInfo from './TaskInfo.vue'
 import EmptyComponent from '../empty/EmptyComponent.vue'
+import UserAddList from '../user/UserAddList.vue'
 import { useGroupStore } from '../../pinia/groupPinia.ts'
 import { useTaskStore } from '../../pinia/taskPinia.ts'
 import ModelComponent from '../../components/model/ModelComponent.vue'
@@ -12,6 +15,8 @@ const taskStore = useTaskStore()
 
 const isModal = ref(false)
 const isTaskAddModal = ref(false)
+const isUserAddModal = ref(false)
+const isTaskInfoModal = ref(false)
 const title = ref('')
 
 const openModal = function () {
@@ -21,6 +26,8 @@ const openModal = function () {
 const closeModal = function () {
   isModal.value = false
   isTaskAddModal.value = false
+  isUserAddModal.value = false
+  isTaskInfoModal.value = false
 }
 
 const getTasks = async () => {
@@ -32,20 +39,25 @@ const getTasks = async () => {
 }
 
 const action = function(type) {
-  console.log(type)
   switch (type) {
     case 'task':
       isModal.value = true
       isTaskAddModal.value = true
       title.value = 'Добавить задачу'
+      break
     case 'user':
       isModal.value = true
+      isUserAddModal.value = true
       title.value = 'Добавить участника'
+      break
     case 'filter':
       title.value = 'Фильтр'
+      break
     case 'info':
       isModal.value = true
-      title.value = 'Данные'
+      isTaskInfoModal.value = true
+      title.value = 'Данные группы'
+      break
   }
 }
 
@@ -62,7 +74,11 @@ watch(
     <TaskConfig
       :name="groupStore.selectedGroup?.name"
       @action="action"/>
+    <TaskList
+      v-if="taskStore.tasks?.length"
+      @get-task-list="getTasks"/>
     <EmptyComponent
+      v-else
       text="Нет задач"/>
   </div>
   <ModelComponent
@@ -72,7 +88,12 @@ watch(
       <p>{{title}}</p>
     </template>
     <template #default>
-      <TaskAdd v-if="isTaskAddModal"/>
+      <TaskAdd
+        v-if="isTaskAddModal"
+        @get-task="getTasks"
+        @close="closeModal"/>
+      <UserAddList v-else-if="isUserAddModal" />
+      <TaskInfo v-else-if="isTaskInfoModal" />
     </template>
   </ModelComponent>
 </template>

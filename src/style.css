@@ -26,6 +26,7 @@
   --light-blue: #D7E5FF;
   --blue: #004DE7;
   --light-gray: #c0c3c6;
+  --light-gray-opacity: #c0c3c61c;
   --lighter-gray-hover: #f0f0f0;
   --black-gray: #242424;
 }
@@ -47,6 +48,16 @@
   border-radius: 10px;
 }
 
+.icon {
+  display: flex;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}
 
 input:focus {
   outline: none;
@@ -80,6 +91,21 @@ button:focus-visible,
 a:focus,
 a:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.danger {
+  background-color: #ffdddd;
+  color: #a70000;
+}
+
+.danger:hover {
+  border-color: #fe6f6f;
+}
+
+.danger:focus,
+.danger:focus-visible {
+  outline: none;
+  border-color: #d51313;
 }
 
 h1 {
@@ -169,8 +195,12 @@ header button {
   display: flex;
   background-color: var(--step-background-color);
   border-radius: 16px;
-  padding: 32px;
   flex-direction: column;
+}
+
+.group_block,
+.user_block {
+  padding: 32px;
 }
 
 .user_block {
@@ -285,12 +315,27 @@ header button {
   gap: 4px;
 }
 
+.form_fields label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .form_fields input {
   padding: 8px;
   border-radius: 8px;
   border: 1px solid #444c56;
   background-color: white;
   color: var(--black-gray);
+  font-size: 14px;
+}
+
+.form_fields textarea {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #444c56;
+  background-color: white;
+  color: var(--black-gray);
+  font-size: 14px;
 }
 
 .form_check {
@@ -327,6 +372,8 @@ header button {
 .task_header {
   display: flex;
   justify-content: space-between;
+  padding: 32px;
+  border-bottom: 1px solid var(--light-gray-opacity);
 }
 
 .task_header ul {
@@ -339,9 +386,106 @@ header button {
   margin: auto;
 }
 
-.icon {
+.task_list {
   display: flex;
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 32px;
 }
+
+.task_list ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task_list li {
+  display: flex;
+  gap: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.task_list li:first-child {
+  border-bottom: 1px solid var(--light-gray-opacity);
+}
+
+.task_list li:not(:first-child):hover {
+  border: 1px solid var(--lighter-gray-hover);
+}
+
+.task_list_icons {
+  display: flex;
+  gap: 8px
+}
+
+.first {
+  width: 12px;
+}
+
+.second {
+  width: 400px;
+}
+
+.third {
+  width: 150px;
+}
+
+.delete_item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.delete_item_text {
+  font-size: 14px;
+}
+
+.delete_item_bttns {
+  display: flex;
+  gap: 12px;
+  color: white;
+}
+
+.user_lists {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user_lists button {
+  align-self: center;
+  color: white;
+}
+
+.user_list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.user_list ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_list li {
+  display: flex;
+  padding: 4px;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--light-gray);
+  cursor: pointer;
+}
+
+.user_list li:hover {
+  background-color: var(--lighter-gray-hover);
+}
+
+.user_list li:last-child {
+  border-bottom: none;
+}
+
 
 /* empty component starts */
 .empty_block {

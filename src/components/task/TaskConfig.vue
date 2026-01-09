@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { ADD_USER, ADD_TASK, INFO, FILTER } from '../../store/constants.ts'
+import { TRASH, ADD_USER, ADD_TASK, INFO, FILTER } from '../../store/constants.ts'
 
 const props = defineProps({
     name: String
