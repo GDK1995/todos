@@ -16,6 +16,12 @@ export const useUserGroupStore = defineStore('userGroup', {
       return data
     },
 
+    async deleteUserFromGroup(userId: number) {
+      const payload = { user_id: userId, group_id: useGroupStore().selectedGroupId }
+      const { data } = await http.delete('/user-group', { data: payload })
+      return data
+    },
+
     async getUserByGroupId() {
         this.groupUsers = []
         const groupStore = useGroupStore()

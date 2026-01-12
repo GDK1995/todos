@@ -460,6 +460,16 @@ header button {
   color: white;
 }
 
+.list_block input[type="search"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--black-gray);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background-color: white;
+  color: var(--black-gray);
+}
+
 .user_list {
   max-height: 400px;
   overflow-y: auto;
@@ -496,6 +506,7 @@ header button {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  height: 200px;
   max-height: 200px;
   overflow-y: auto;
 }
@@ -514,6 +525,21 @@ header button {
 }
 
 .task_info_members li:hover {
+  background-color: var(--lighter-gray-hover);
+}
+
+.task_info_members li:last-child {
+  border-bottom: none;
+}
+
+.task_info_members button {
+  background-color: white;
+  border: 1px solid var(--light-gray);
+  padding: 0 8px;
+}
+
+.task_info_members button:hover {
+  border: 1px solid red;
   background-color: var(--lighter-gray-hover);
 }
 

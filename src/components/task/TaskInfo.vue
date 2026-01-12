@@ -12,6 +12,7 @@ const groupStore = useGroupStore()
 const emits = defineEmits(['close', 'get-groups'])
 const isModal = ref(false)
 const title = ref('')
+const selectedUserToDelete = ref(null)
 
 const openModal = function () {
   isModal.value = true
@@ -27,6 +28,21 @@ const getGroupUsers = async function () {
       await groupUserStore.getUserByGroupId()
     } catch (e) {
       console.log(e)
+    }
+}
+
+const selectUser = function (userId) {
+    selectedUserToDelete.value = userId
+    deleteUserFromGroup()
+}
+
+const deleteUserFromGroup = async function () {
+    try {
+        await groupUserStore.deleteUserFromGroup(selectedUserToDelete.value)
+        getGroupUsers()
+        selectedUserToDelete.value = null
+    } catch (e) {
+        console.log(e)
     }
 }
 
@@ -56,7 +72,10 @@ onMounted(() => {
             <h4>{{user.username}}</h4>
             <p>{{user.email}}</p>
           </div>
-          <button>
+          <button
+            @click="selectUser(user.id)"
+            class="task_info_members_delete"
+            title="Удалить">
             <div v-html="TRASH"></div>
           </button>
         </li>

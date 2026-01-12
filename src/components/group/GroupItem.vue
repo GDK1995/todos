@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useGroupStore } from '../../pinia/groupPinia.ts'
 import ModelComponent from '../../components/model/ModelComponent.vue'
 import GroupAdd from './GroupAdd.vue'
@@ -24,9 +24,9 @@ const unselectGroup = function () {
   groupStore.unselectGroup()
 }
 
-const getAllGroups = async () => {
+const getGroupsByUser = async () => {
   try {
-    await groupStore.getGroups()
+    await groupStore.getGroupsByUserId()
   } catch (error) {
     console.error('Failed to fetch groups:', error)
   }
@@ -34,7 +34,7 @@ const getAllGroups = async () => {
 
 
 onMounted(() => {
-  getAllGroups()
+  getGroupsByUser()
 })
 </script>
 
@@ -50,7 +50,7 @@ onMounted(() => {
       <ul>
         <li @click="unselectGroup">Все задачи</li>
         <li
-          v-for="(groupItem, index) in groupStore.groups"
+          v-for="(groupItem, index) in groupStore.groupByUser"
           :key="groupItem+index"
           @click="selectGroup(groupItem.id)">
           {{groupItem.name}}

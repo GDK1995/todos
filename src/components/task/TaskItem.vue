@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, watch, ref } from 'vue'
+import { watch, ref } from 'vue'
 import TaskConfig from './TaskConfig.vue'
 import TaskAdd from './TaskAdd.vue'
 import TaskList from './TaskList.vue'
@@ -100,7 +100,9 @@ watch(
         v-if="isTaskAddModal"
         @get-task="getTasks"
         @close="closeModal"/>
-      <UserAddList v-else-if="isUserAddModal" />
+      <UserAddList
+        v-else-if="isUserAddModal"
+        @close="closeModal"/>
       <TaskInfo
         v-else-if="isTaskInfoModal"
         @get-groups="getAllGroups"

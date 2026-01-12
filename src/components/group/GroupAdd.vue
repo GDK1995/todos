@@ -2,11 +2,13 @@
 import { ref, onMounted } from 'vue'
 import type { UserInfo } from '../../store/types.ts'
 import { useGroupStore } from '../../pinia/groupPinia.ts'
+import { useAuthStore } from '../../pinia/authPinia.ts'
 import { useUserStore } from '../../pinia/userPinia.ts'
 import { useUserGroupStore } from '../../pinia/userGroupPinia.ts'
 
 const store = useGroupStore()
 const storeUser = useUserStore()
+const storeAuth = useAuthStore()
 const storeUserGroup = useUserGroupStore()
 const emits = defineEmits(['get-groups', 'close'])
 
@@ -27,6 +29,10 @@ const selectUser = function (id) {
   } else {
     selectedUser.value.push(id)
   }
+}
+
+const addCreator = function () {
+  selectedUser.value.push(storeAuth.user.id)
 }
 
 const addGroup = async function () {
@@ -66,6 +72,7 @@ const getAllUser = async function () {
 
 onMounted(() => {
   getAllUser()
+  addCreator()
 })
 </script>
 

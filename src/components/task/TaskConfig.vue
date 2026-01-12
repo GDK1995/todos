@@ -25,6 +25,7 @@ const actions = function (type) {
         :key="icon + index">
         <div
           v-html="icon"
+          v-show="props.name || (!props.name && index==2)"
           :title="titles[index]"
           @click="actions(types[index])"
           class="icon"></div>
