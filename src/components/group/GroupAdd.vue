@@ -5,6 +5,8 @@ import { useGroupStore } from '../../pinia/groupPinia.ts'
 import { useAuthStore } from '../../pinia/authPinia.ts'
 import { useUserStore } from '../../pinia/userPinia.ts'
 import { useUserGroupStore } from '../../pinia/userGroupPinia.ts'
+import UserList from '../user/UserList.vue'
+import SkeletonBlock from '../skeleton/SkeletonBlock.vue'
 
 const store = useGroupStore()
 const storeUser = useUserStore()
@@ -17,6 +19,7 @@ const types = ['text']
 const fields = ['name']
 const userList = ref<UserInfo[]>([])
 const selectedUser = ref<number[]>([])
+const isLoading = ref(false)
 
 const group = ref({
   name: ''
@@ -63,10 +66,13 @@ const afterAdd = function () {
 }
 
 const getAllUser = async function () {
+  isLoading.value = true
   try {
     userList.value = await storeUser.getAllUsers()
   } catch (e) {
     console.log(e)
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -85,21 +91,12 @@ onMounted(() => {
       <label>{{labels[index]}}</label>
       <input :type="types[index]" v-model="group[item]"/>
     </div>
-    <div class="form_check">
-      <ul>
-        <li
-          v-for="(user, index) in userList"
-          :key="user + index"
-          @click="selectUser(user.id)">
-          <div class="form_check_list">
-            <h4>{{user.username}}</h4>
-            <p>{{user.email}}</p>
-          </div>
-          <input
-            type="checkbox"
-            :checked="selectedUser.includes(user.id)"/>
-        </li>
-      </ul>
+    <div class="">
+      <SkeletonBlock v-if="isLoading" />
+      <UserList
+        v-else
+        :selected-user="selectedUser"
+        @select-user="selectUser"/>
     </div>
     <button type="submit">
       Добавить

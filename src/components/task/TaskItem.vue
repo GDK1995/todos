@@ -3,6 +3,7 @@ import { watch, ref } from 'vue'
 import TaskConfig from './TaskConfig.vue'
 import TaskAdd from './TaskAdd.vue'
 import TaskList from './TaskList.vue'
+import TaskUsersAllList from './TaskUsersAllList.vue'
 import TaskInfo from './TaskInfo.vue'
 import EmptyComponent from '../empty/EmptyComponent.vue'
 import UserAddList from '../user/UserAddList.vue'
@@ -33,6 +34,14 @@ const closeModal = function () {
 const getTasks = async () => {
   try {
     await taskStore.getTaskByGroupId(groupStore.selectedGroup?.id)
+  } catch (error) {
+    console.error('Failed to fetch groups:', error)
+  }
+}
+
+const getUsersAllTasks = async () => {
+  try {
+    await taskStore.getUsersAllTasks()
   } catch (error) {
     console.error('Failed to fetch groups:', error)
   }
@@ -71,9 +80,14 @@ const action = function(type) {
 
 watch(
   () => groupStore.selectedGroup,
-  () => {
-    getTasks()
-  }
+  (newValue) => {
+    if (newValue === null) {
+      getUsersAllTasks()
+    } else {
+      getTasks()
+    }
+  },
+  { immediate: true }
 )
 </script>
 
@@ -82,8 +96,11 @@ watch(
     <TaskConfig
       :name="groupStore.selectedGroup?.name"
       @action="action"/>
+    <TaskUsersAllList
+      v-if="!groupStore.selectedGroup && taskStore.usersAllTasks?.length"
+      @get-task-list="getUsersAllTasks" />
     <TaskList
-      v-if="taskStore.tasks?.length"
+      v-else-if="groupStore.selectedGroup?.name && taskStore.tasks?.length"
       @get-task-list="getTasks"/>
     <EmptyComponent
       v-else

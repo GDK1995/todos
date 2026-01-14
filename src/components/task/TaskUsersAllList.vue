@@ -3,8 +3,7 @@ import { ref } from 'vue'
 import type { TaskInfo } from '../../store/types.ts'
 import { useTaskStore } from '../../pinia/taskPinia.ts'
 import { TRASH, INFO_DARK } from '../../store/constants.ts'
-import TaskEdit from './TaskEdit.vue'
-import DeleteItem from '../delete/DeleteItem.vue'
+import TaskUsersAllEdit from './TaskUsersAllEdit.vue'
 import ModelComponent from '../../components/model/ModelComponent.vue'
 
 const taskStore = useTaskStore()
@@ -13,7 +12,6 @@ const emits = defineEmits(['get-task-list'])
 
 const isModal = ref(false)
 const isEditModal = ref(false)
-const isDeleteModal = ref(false)
 
 const openModal = function () {
   isModal.value = true
@@ -22,15 +20,10 @@ const openModal = function () {
 const closeModal = function () {
   isModal.value = false
   isEditModal.value = false
-  isDeleteModal.value = false
 }
 
 const openEditModal = function () {
     isEditModal.value = true
-}
-
-const openDeleteModal = function () {
-    isDeleteModal.value = true
 }
 
 const selectTask = function (id) {
@@ -41,23 +34,6 @@ const getInfo = function (id) {
     selectTask(id)
     openModal()
     openEditModal()
-}
-
-const toDeleteTask = function (id) {
-    selectTask(id)
-    openModal()
-    openDeleteModal()
-}
-
-const deleteTask = async function () {
-    try {
-        await taskStore.deleteTask()
-        getTask()
-        closeModal()
-        taskStore.unselectTask()
-    } catch (e) {
-        console.log(e)
-    }
 }
 
 const getTask = function () {
@@ -75,16 +51,17 @@ const formatedDate = (date) => {
   <div class="task_list">
     <ul>
       <li>
-        <p class="second">Название</p>
+        <p class="fourth">Название</p>
         <p class="third">Срок исполнения</p>
+        <p class="third">Группа</p>
       </li>
-      <li v-for="(task, index) in taskStore.tasks"
+      <li v-for="(task, index) in taskStore.usersAllTasks"
         :key="task + index"
         @click="getInfo(task.id)">
-        <p :class="{'crossed' : task.isDone}" class="second truncate">{{task.name}}</p>
+        <p :class="{'crossed' : task.isDone}" class="fourth truncate_fourth">{{task.name}}</p>
         <p :class="{'crossed' : task.isDone}" class="third">{{formatedDate(task.deadline)}}</p>
+        <p :class="{'crossed' : task.isDone}" class="third">{{task.group_name}}</p>
         <div class="task_list_icons">
-          <div v-html="TRASH" title="Удалить" class="icon" @click.stop="toDeleteTask(task.id)"></div>
           <div v-html="INFO_DARK" title="Посмотреть" class="icon" @click.stop="getInfo(task.id)"></div>
         </div>
       </li>
@@ -95,17 +72,12 @@ const formatedDate = (date) => {
     @close="closeModal">
     <template #header>
       <p v-if="isEditModal">Данные</p>
-      <p v-else-if="isDeleteModal">Удаление</p>
     </template>
     <template #default>
-      <TaskEdit v-if="isEditModal"
+      <TaskUsersAllEdit
+        v-if="isEditModal"
         @get-task="getTask"
         @close="closeModal"/>
-      <DeleteItem
-        v-else-if="isDeleteModal"
-        text="Вы точно хотите удалить задачу"
-        @close="closeModal"
-        @confirmed="deleteTask"/>
     </template>
   </ModelComponent>
 </template>

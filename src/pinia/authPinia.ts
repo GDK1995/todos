@@ -35,6 +35,21 @@ export const useAuthStore = defineStore('auth', {
       this.user = data.user
     },
 
+    async update(username?: string, password?: string) {
+      const payload = {
+        id: this.user?.id,
+        username,
+        password
+      }
+      try {
+        const { data } = await http.patch('/user/update', payload)
+        this.user = data
+      } catch (e) {
+        console.error('Failed to update user:', e)
+        throw e
+      }      
+    },
+
     async logout() {
       this.token = null
       this.user = null

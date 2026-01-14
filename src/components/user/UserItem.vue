@@ -39,7 +39,7 @@ const closeModal = function () {
         <p>Редактировать</p>
       </template>
       <template #default>
-        <ProfileItem />
+        <ProfileItem @close="closeModal" />
       </template>
     </ModelComponent>
   </div>

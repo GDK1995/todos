@@ -23,7 +23,7 @@ const filteredUser = computed(() => userStore.users.filter(elem => elem.username
     <input
       type="search"
       v-model="search"
-      placeholder="Поиск..."/>
+      placeholder="Поиск пользователей..."/>
     <div class="user_list">
       <ul>
         <li

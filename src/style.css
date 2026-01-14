@@ -59,6 +59,13 @@
   max-width: 400px;
 }
 
+.truncate_fourth {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
 input:focus {
   outline: none;
 }
@@ -114,6 +121,10 @@ h1 {
 
 ul {
   list-style: none;
+}
+
+.crossed {
+  text-decoration: line-through;
 }
 
 header {
@@ -301,11 +312,11 @@ header button {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  font-size: 14px;
 }
 
 .forms button {
   align-self: center;
-  font-size: 14px;
   color: white;
 }
 
@@ -316,17 +327,29 @@ header button {
 }
 
 .form_fields label {
-  font-size: 14px;
   font-weight: 600;
 }
 
-.form_fields input {
+.form_fields input[type="text"],
+.form_fields input[type="date"],
+.form_fields input[type="password"] {
   padding: 8px;
   border-radius: 8px;
   border: 1px solid #444c56;
   background-color: white;
   color: var(--black-gray);
-  font-size: 14px;
+}
+
+.form_fields_row {
+  display: flex;
+  gap: 8px;
+}
+
+.form_fields_row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  margin: auto 0;
 }
 
 .form_fields textarea {
@@ -335,7 +358,6 @@ header button {
   border: 1px solid #444c56;
   background-color: white;
   color: var(--black-gray);
-  font-size: 14px;
 }
 
 .form_check {
@@ -433,6 +455,10 @@ header button {
   width: 150px;
 }
 
+.fourth {
+  width: 260px;
+}
+
 .delete_item {
   display: flex;
   flex-direction: column;
@@ -471,7 +497,7 @@ header button {
 }
 
 .user_list {
-  max-height: 400px;
+  max-height: 300px;
   overflow-y: auto;
 }
 
@@ -547,6 +573,74 @@ header button {
   color: white;
   align-self: center;
 }
+
+/* selector starts */
+.selector {
+  position: relative;
+  display: inline-block;
+}
+
+.selector_item {
+  display: flex;
+  background-color: white;
+  border: 1px solid var(--black-gray);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  gap: 8px;
+}
+
+.selector_item label {
+  flex-grow: 1;
+}
+
+.selector_icon {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.selector_icon.open {
+  transform: rotate(180deg);
+}
+
+.selector_list {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background-color: white;
+  border: 1px solid var(--black-gray);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  width: 100%;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.selector_search {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-bottom: 1px solid var(--lighter-gray-hover);
+  border-radius: 8px 8px 0 0;
+  background-color: var(--lighter-gray-hover);
+  color: var(--black-gray);
+}
+
+.selector_option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.selector_option li {
+  padding: 6px 8px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--black-gray);
+}
+/* selector ends */
 
 /* empty component starts */
 .empty_block {
@@ -626,7 +720,6 @@ header button {
   font-size: 14px;
   color: #333;
 }
-/* modal ends */
 
 @keyframes modalFadeIn {
   from {
@@ -638,6 +731,38 @@ header button {
     transform: scale(1);
   }
 }
+/* modal ends */
+
+/* skeleton starts */
+.task-skeleton {
+  background: #f0f0f0;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  padding: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+.skeleton-title {
+  height: 14px;
+  width: 50%;
+  background: #ddd;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.skeleton-text {
+  height: 14px;
+  width: 80%;
+  background: #ddd;
+  border-radius: 4px;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+/* skeleton ends */
 
 @media (prefers-color-scheme: light) {
   :root {

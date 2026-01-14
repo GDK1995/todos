@@ -66,7 +66,7 @@ onMounted(() => {
     </template>
     <template #default>
       <GroupAdd
-        @get-groups="getAllGroups"
+        @get-groups="getGroupsByUser"
         @close="closeModal"/>
     </template>
   </ModelComponent>

@@ -4,6 +4,7 @@ import UserList from './UserList.vue'
 import { useUserStore } from '../../pinia/userPinia.ts'
 import { useGroupStore } from '../../pinia/groupPinia'
 import { useUserGroupStore } from '../../pinia/userGroupPinia.ts'
+import SkeletonBlock from '../skeleton/SkeletonBlock.vue'
 
 const userStore = useUserStore()
 const groupStore = useGroupStore()
@@ -12,6 +13,7 @@ const userGroupStore = useUserGroupStore()
 const emits = defineEmits(['close'])
 
 const selectedUserIds = ref([])
+const isLoading = ref(false)
 
 const addToSelectedUser = function(id) {
   if (selectedUserIds.value.includes(id)) {
@@ -31,10 +33,13 @@ const getAddedUserIds = async function () {
 }
 
 const getAllUser = async function () {
+  isLoading.value = true
   try {
     await userStore.getAllUsers()
   } catch (e) {
     console.log(e)
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -63,6 +68,7 @@ watch(
 
 <template>
   <div class="user_lists">
+    <SkeletonBlock v-if="isLoading" />
     <UserList
       :selected-user="selectedUserIds"
       @select-user="addToSelectedUser"/>

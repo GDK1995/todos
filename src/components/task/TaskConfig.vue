@@ -7,9 +7,9 @@ const props = defineProps({
 
 const emits = defineEmits(['action'])
 
-const icons = [ADD_USER, ADD_TASK, FILTER, INFO]
-const types = ['user', 'task', 'filter', 'info']
-const titles = ['Добавить участника', 'Добавить задачу', 'Фильтр', 'Данные']
+const icons = [ADD_USER, ADD_TASK, INFO]
+const types = ['user', 'task', 'info']
+const titles = ['Добавить участника', 'Добавить задачу', 'Данные']
 
 const actions = function (type) {
   emits('action', type)
@@ -25,7 +25,7 @@ const actions = function (type) {
         :key="icon + index">
         <div
           v-html="icon"
-          v-show="props.name || (!props.name && index==2)"
+          v-show="props.name"
           :title="titles[index]"
           @click="actions(types[index])"
           class="icon"></div>

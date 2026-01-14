@@ -6,12 +6,16 @@ export const useTaskStore = defineStore('task', {
   state: () => {
     return {
       tasks: [] as TaskInfo[],
+      usersAllTasks: [] as TaskInfo[],
       selectedTaskId: null as number | null
     }
   },
   getters: {
     selectedTask(state) {
-        return state.tasks.find(task => task.id === state.selectedTaskId) || null
+      return state.tasks.find(task => task.id === state.selectedTaskId) || null
+    },
+    selectedUsersAllTask(state) {
+      return state.usersAllTasks.find(task => task.id === state.selectedTaskId) || null
     },
   },
   actions: {
@@ -25,8 +29,22 @@ export const useTaskStore = defineStore('task', {
 
     async getTaskByGroupId(id: number) {
       this.tasks = []
+      this.usersAllTasks = []
       const { data } = await http.get(`/task?group_id=${id}`)
+      for (const task of data) {
+        task.deadline = task.deadline ? task.deadline.slice(0, 10) : null
+      }
       this.tasks = data
+    },
+
+    async getUsersAllTasks() {
+      this.tasks = []
+      this.usersAllTasks = []
+      const { data } = await http.get(`/task/all`)
+      for (const task of data) {
+        task.deadline = task.deadline ? task.deadline.slice(0, 10) : null
+      }
+      this.usersAllTasks = data
     },
 
     async addTask(payload: TaskAddInfo) {
@@ -35,6 +53,16 @@ export const useTaskStore = defineStore('task', {
         return data
       } catch (e) {
         console.error('Failed to add task:', e)
+        throw e
+      }
+    },
+
+    async updateTask(payload: TaskInfo) {
+      try {
+        const { data } = await http.patch('/task', payload)
+        return data
+      } catch (e) {
+        console.error('Failed to update task:', e)
         throw e
       }
     },
